@@ -1,0 +1,49 @@
+*{
+    font-family: sans-serif;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #ffffff;
+    width: 100%;
+}
+
+.botaoTopo{
+    width: 500px;
+    display: flex;
+}
+
+.botaoTopo button{
+    border-radius: 15px 50px;
+}
+
+.botaoTopo div{
+    display: flex;
+}
+
+.botaoMid{
+    width: 500px;
+    display: flex;
+}
+
+.botaoMid button{
+    border-radius: 15px 50px;
+}
+
+.botaoMid div{
+    display: flex;
+}
+
+.botaoMid{
+    margin-top: 50px;
+}
+
+.screenBody table{
+    background-color: rgb(195, 215, 233);
+}
+
+.corpoCadastro{
+    display: flex;
+}

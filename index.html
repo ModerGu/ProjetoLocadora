@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMovie</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/axios@0.21.4/dist/axios.min.js"></script>
+
+</head>
+
+<body>
+    <main>
+
+        <div class="screenBody">
+            <div class="botaoTopo">
+                <span><button onclick="cadastrarCliente();">Cadastrar cliente</button></span>
+                <span><button onclick="cadastrarFilme();">Cadastrar filme</button></span>
+                <span><button onclick="cadastrarReserva();">Reservar filme</button></span>
+            </div>
+
+            <div class="corpoCadastro">
+                <div class="corpoCadastraCliente">
+                    <table id="cdcliente">
+                        <thead>
+                            <tr>
+                                <th>Preencha os dados abaixo para efetuar o cadastro do cliete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" id="nmcliente" placeholder="Nome completo"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" id="vlidade" placeholder="Idade"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="corpoCadastraFilme">
+                    <table id="cdfilme">
+                        <thead>
+                            <tr>
+                                <th>Para incluir o filme na listagem, preecha os dados abaixo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" id="nmfilme" placeholder="Filme"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" id="classificacao" placeholder="Classificação"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" id="genero" placeholder="Gênero"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="corpoCadastraReserva">
+                    <table id="cdreserva">
+                        <thead>
+                            <tr>
+                                <th>Se deseja fazer uma reserva, informe os dados abaixo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="date" name="dtreserva" id="dtreserva"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="date" name="dtdevolucao" id="dtdevolucao"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option value=""></option>
+                                        <option value="">007 operação skyfall</option>
+                                        <option value="">007 Quantum of Solace</option>
+                                        <option value="">007 Contra Spectre</option>
+                                        <option value="">007 Sem tempo para morrer</option>
+                                        <option value="">007 Cassino Royale</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option value=""></option>
+                                        <option value="">Gustavo</option>
+                                        <option value="">Vitor</option>
+                                        <option value="">James</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" placeholder="Valor total"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="botaoMid">
+                <span><button onclick="listarCliente();">Listar clientes</button></span>
+                <span><button onclick="listarFilme();">Listar filmes</button></span>
+                <span><button onclick="listarReserva();">Listar reservas</button></span>
+            </div>
+
+            <div id="lifilmes"></div>
+            <div id="liclientes"></div>
+            <div id="lireservas"></div>
+        </div>
+    </main>
+
+    <script lang="JavaScript">
+
+        const url = "http://localhost:8080"
+
+        function getUsers() {
+            axios.get(url)
+                .then(response => {
+                    const data = response.data
+                    renderApiResult.textContent = JSON.stringify(data)
+                })
+                .catch(error => console.log(error))
+        }
+
+        function listarCliente() {
+            axios.get(`${url}/listaCliente`)
+                .then(response => {
+                    const data = response.data
+                     for(var x = 0; x < data.length; x++){
+                        document.createElement('li')
+                        liclientes.innerText = JSON.stringify(data)
+                        document.body.appendChild(liclientes);
+                    }
+                })
+                .catch(error => console.log(error))
+        }
+
+        function listarFilme() {
+            axios.get(`${url}/listaFilme`)
+                .then(response => {
+                    const data = response.data
+                     for(var x = 0; x < data.length; x++){
+                        document.createElement('li')
+                        lifilmes.innerText = JSON.stringify(data)
+                        document.body.appendChild(lifilmes);
+                     }
+                })
+                .catch(error => console.log(error))
+        }
+
+        function listarReserva() {
+            axios.get(`${url}/listaReserva`)
+                .then(response => {
+                    const data = response.data
+                     for(var x = 0; x < data.length; x++){
+                        document.createElement('li')
+                        lireservas.innerText = JSON.stringify(data)
+                        document.body.appendChild(lireservas);
+                     }
+                })
+                .catch(error => console.log(error))
+        }
+
+        function cadastrarCliente(){
+            const cliente = {
+                nome: document.getElementById('nmcliente').value, 
+                idade: parseInt(document.getElementById('vlidade').value)
+            }
+            axios.post(`${url}/cliente`, cliente)
+                .then(response => {
+                    alert(JSON.stringify(response.data))
+                })
+                .catch(error => console.error(error));            
+        }
+
+        function cadastrarFilme() {
+            const filme = {
+                texto: document.getElementById('nmfilme').value, 
+                classificacao: parseInt(document.getElementById('classificacao').value), 
+                genero: document.getElementById('genero').value 
+            }
+            console.log(filme)
+            axios.post(`${url}/filme`, filme)
+                .then(response => {
+                    alert(JSON.stringify(response.data))
+                })
+                .catch(error => console.error(error));
+        }
+
+        function cadastrarReserva(){
+            const reserva = {
+                id: 3, 
+                Date: document.getElementById('nmcliente').value, 
+                Date: document.getElementById('nmcliente').value, 
+                idade: parseInt(document.getElementById('vlidade').value)
+            }
+            axios.post(`${url}/reserva`, reserva)
+                .then(response => {
+                    alert(JSON.stringify(response.data))
+                })
+                .catch(error => console.error(error));            
+        }
+
+    </script>
+</body>
+
+</html>
